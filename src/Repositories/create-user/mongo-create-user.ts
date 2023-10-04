@@ -5,7 +5,7 @@ import {
 import { MongoClient } from "../../database/mongo";
 import { User } from "../../models/user";
 
-export class MongoCreateUser implements ICreateUserRepository {
+export class MongoCreateUserRepository implements ICreateUserRepository {
   async createUser(params: CreateUserParams): Promise<User> {
     // Criando Usuario
     const { insertedId } = await MongoClient.db
@@ -17,12 +17,15 @@ export class MongoCreateUser implements ICreateUserRepository {
       .collection<Omit<User, "id">>("users")
       .findOne({ _id: insertedId });
 
+    // Se ele não for criado, um error
     if (!user) {
       throw new Error("user not created");
     }
 
+    // substitui o _id criado automaticamente pelo mongo, pelo id na nossa model
     const { _id, ...rest } = user;
 
+    // Se for criado retornaremos isso
     return { id: _id.toHexString(), ...rest };
   }
 }
