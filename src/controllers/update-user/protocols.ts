@@ -1,4 +1,3 @@
-import { HttpRequest, HttpResponse } from './../protocols';
 import { User } from "../../models/user";
 
 export interface UpdateUserParams {
@@ -7,9 +6,7 @@ export interface UpdateUserParams {
     password?: string;
 }
 
-export interface IUpdateUserController {
-    handle(httpRequest: HttpRequest<any>): Promise<HttpResponse<User>>
-}
+
 export interface IUpdateUserRepository {
     updateUser(id: string, params: UpdateUserParams): Promise<User>;
 }
